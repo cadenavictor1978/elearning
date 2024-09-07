@@ -20,6 +20,6 @@ public class StudentController {
 
 	@GetMapping("/students")
 	Collection<StudentDTO> all() {
-		return studentService.findAll();
+		return studentService.findAllAndShowIfHaveAPopularSubject();
 	}
 }

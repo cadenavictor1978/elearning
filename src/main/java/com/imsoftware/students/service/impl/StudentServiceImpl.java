@@ -40,7 +40,19 @@ public class StudentServiceImpl implements IStudentService {
 	public Collection<StudentDTO> findAllAndShowIfHaveAPopularSubject() {
 		// TODO Obtener la lista de todos los estudiantes e indicar la materia más concurrida existentes en la BD e
 		// indicar si el estudiante cursa o no la materia más concurrida registrado en la BD.
-		return null;
+                String popularSubject;
+                popularSubject = studentRepository.buscaPopularSubject();
+                return studentRepository.findAll().stream().map(new Function<Student, StudentDTO>() {
+			@Override
+			public StudentDTO apply(Student student) {
+				List<String> programmingLanguagesKnowAbout = student.getSubjects().stream()
+						.map(pl -> new String(pl.getName())).collect(Collectors.toList());
+				boolean isPop = programmingLanguagesKnowAbout.contains(popularSubject);
+                                return new StudentDTO(student.getName(), isPop);
+			}
+
+		}).collect(Collectors.toList());
 	}
+ 
 
 }
